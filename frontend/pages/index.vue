@@ -126,10 +126,26 @@ v-container.px-0.py-0(fluid)
             v-text-field(v-model="form.fractalDimensionWorst" label="Fractal Dimension Worst"
             hide-details filled depressed)
 
-    v-card-actions.justify-center.py-5
+    v-card-actions.justify-center.py-5.align-items-center
       v-btn(outlined color="primary" @click="cleanValues()") Limpiar valores
       v-btn(color="info" @click="testDialog=true") Valores de prueba
+      v-btn(outlined color="info" @click="modelDialog=true") Seleccionar modelo
       v-btn(color="primary" @click="getPrediction()") Predecir
+
+  //- Diálogo para seleccionar modelo
+  v-dialog(v-model="modelDialog" max-width="500")
+    v-card.pb-4
+      v-card-title.primary.white--text Seleccionar modelo
+        v-spacer
+        v-btn(icon color="white" @click="modelDialog=false")
+          v-icon mdi-close
+      v-card-text.pt-4
+        .primary--text Seleccionar modelo
+        v-select(v-model="model" :items="items" label="Modelo" hide-details
+        filled depressed dense)
+      v-card-actions
+        v-spacer
+        v-btn(color="primary" @click="modelDialog=false") Aceptar
 
   //- Diálogo para mostrar los resultados de la predicción
   v-dialog(v-model="resultsDialog" max-width="500")
@@ -148,7 +164,11 @@ v-container.px-0.py-0(fluid)
 
         p.mb-0.pt-2
           | Resultado de predicción: {{' '}}
-          span.font-weight-bold {{ prediction  }}.
+          span.font-weight-bold {{ prediction }}.
+
+        p.mb-0.pt-2
+          | Modelo seleccionado: {{' '}}
+          span.font-weight-bold {{ modelName }}.
 
         p.mb-0.pt-2
           | Recordar igualmente que el paciente debe ser evaluado por un
@@ -198,8 +218,10 @@ export default {
   name: 'IndexPage',
   data: () => {
     return {
+      model: 'LOG',
+      modelDialog: false,
       prediction: null,
-      resultsDialog: true,
+      resultsDialog: false,
       testDialog: false,
       overlay: false,
       form: {
@@ -236,11 +258,26 @@ export default {
       }
     }
   },
+
+  computed: {
+    items () {
+      return [
+        { text: 'Logistic Regression (Más confiable)', value: 'LOG' },
+        { text: 'Perceptron (Menos confiable)', value: 'PERCEPTRON' },
+        { text: 'K-Nearest Neighbors (Más confiable)', value: 'KNN' }
+      ]
+    },
+    modelName () {
+      return (this.items.find(item => item.value === this.model)).text
+    }
+  },
+
   methods: {
     async getPrediction () {
       try {
         this.overlay = true
-        this.prediction = (await this.$axios.$post('/api/', this.form)).prediction
+        this.prediction = (await this.$axios.$post(`/api/${this.model}`,
+          this.form)).prediction
         this.overlay = false
         this.resultsDialog = true
       } catch (err) {
