@@ -1,0 +1,37 @@
+from apiflask import Schema, fields
+
+
+class TumorInSchema(Schema):
+  radius_mean = fields.String(data_key='radiusMean')
+  texture_mean = fields.String(data_key='textureMean')
+  perimeter_mean = fields.String(data_key='perimeterMean')
+  area_mean = fields.String(data_key='areaMean')
+  smoothness_mean = fields.String(data_key='smoothnessMean')
+  compactness_mean = fields.String(data_key='compactnessMean')
+  concavity_mean = fields.String(data_key='concavityMean')
+  concave_points_mean = fields.String(data_key='concavePointsMean')
+  symmetry_mean = fields.String(data_key='symmetryMean')
+  fractal_dimension_mean = fields.String(data_key='fractalDimensionMean')
+  radius_se = fields.String(data_key='radiusSe')
+  texture_se = fields.String(data_key='textureSe')
+  perimeter_se = fields.String(data_key='perimeterSe')
+  area_se = fields.String(data_key='areaSe')
+  smoothness_se = fields.String(data_key='smoothnessSe')
+  compactness_se = fields.String(data_key='compactnessSe')
+  concavity_se = fields.String(data_key='concavitySe')
+  concave_points_se = fields.String(data_key='concavePointsSe')
+  symmetry_se = fields.String(data_key='symmetrySe')
+  fractal_dimension_se = fields.String(data_key='fractalDimensionSe')
+  radius_worst = fields.String(data_key='radiusWorst')
+  texture_worst = fields.String(data_key='textureWorst')
+  perimeter_worst = fields.String(data_key='perimeterWorst')
+  area_worst = fields.String(data_key='areaWorst')
+  smoothness_worst = fields.String(data_key='smoothnessWorst')
+  compactness_worst = fields.String(data_key='compactnessWorst')
+  concavity_worst = fields.String(data_key='concavityWorst')
+  concave_points_worst = fields.String(data_key='concavePointsWorst')
+  symmetry_worst = fields.String(data_key='symmetryWorst')
+  fractal_dimension_worst = fields.String(data_key='fractalDimensionWorst')
+
+class PredictionOutSchema(Schema):
+  prediction = fields.Integer()

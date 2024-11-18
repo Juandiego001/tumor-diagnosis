@@ -1,0 +1,5 @@
+venv
+activate
+logs
+__pycache__
+.env
